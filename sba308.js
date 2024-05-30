@@ -28,17 +28,6 @@ const AssigmentGroup = [
   }
 ]
 
-const AssigmnetInfo = [
-  {
-    "id": number,
-    "name": string,
-    // the due date for the assignment
-    "due_at": Date string,
-    // the maximum points possible for the assignment
-    "points_possible": number,
-  }
-]
-
 const LearnerSubmission = [
   {
     "learner_id": number,
@@ -49,3 +38,5 @@ const LearnerSubmission = [
     }
   }
 ]
+
+//Analyzing Data
