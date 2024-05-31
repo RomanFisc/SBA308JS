@@ -78,6 +78,14 @@ const LearnerSubmission = [
       "submitted_at": "2024-05-22",
       "score": 55
     }
+  },
+  {
+    "learner_id": 445,
+    "assignment_id": 4,
+    "submission": {
+      "submitted_at": "2024-05-22",
+      "score": 55
+    }
   }
 ]
 
@@ -104,15 +112,15 @@ const LearnerSubmission = [
 //    - 
 
 function getLearnerData(/*CourseInfo,*/ AssignmentGroup, LearnerSubmission) {
-  let learnerResults = {};
+  const learnerResults = {};
   
-  //adding learner_id to learnerResults
   LearnerSubmission.forEach(submission => {
     let userid = submission["learner_id"]
     if (!learnerResults[userid]) {
       learnerResults[userid] = {
-        totalScore: 0,
-        totalPossible: 0,
+        "Student Points": 0,
+        "Possible Points": 0,
+        "Student Grade": 0,
         assignments: []
       }
     }
@@ -123,7 +131,6 @@ function getLearnerData(/*CourseInfo,*/ AssignmentGroup, LearnerSubmission) {
       let currentAssignment = AssignmentGroup[i].assignments[y];
       if (currentAssignment.due_at < "2024-06-03") {
         let pointsPossible = currentAssignment.points_possible;
-        let totalGrade = 0;
 
         for (let x = 0; x < LearnerSubmission.length; x++) {
           let currentSubmission = LearnerSubmission[x];
@@ -133,12 +140,10 @@ function getLearnerData(/*CourseInfo,*/ AssignmentGroup, LearnerSubmission) {
               studentScore *= 0.9;
             }
 
-            totalGrade += pointsPossible;
-
             let learner_id = currentSubmission.learner_id;
 
             if (learnerResults[learner_id]) {
-              learnerResults[learner_id].totalScore += studentScore;
+              learnerResults[learner_id]["Student Points"] += studentScore;
 
               learnerResults[learner_id].assignments.push({
                 assignment_id: currentAssignment.id,
@@ -147,18 +152,30 @@ function getLearnerData(/*CourseInfo,*/ AssignmentGroup, LearnerSubmission) {
             }
           }
         }
-
-        for (let learner_id in learnerResults) {
-          learnerResults[learner_id].totalPossible += totalGrade;
-        }
       }
-    }
-    for (let learner_id in learnerResults) {
-      learnerResults[learner_id]["Student Grade"] = (learnerResults[learner_id].totalScore / learnerResults[learner_id].totalPossible) * 100;
     }
   }
 
-   console.dir(learnerResults, { depth: null });
+  for (let learner_id in learnerResults) {
+    let possiblePoints = 0;
+    for (let i = 0; i < AssignmentGroup.length; i++) {
+      for (let y = 0; y < AssignmentGroup[i].assignments.length; y++) {
+        let currentAssignment = AssignmentGroup[i].assignments[y];
+        if (currentAssignment.due_at < "2024-06-03") {
+          possiblePoints += currentAssignment.points_possible;
+        }
+      }
+    }
+    learnerResults[learner_id]["Possible Points"] = possiblePoints;
+  }
+
+  for (let learner_id in learnerResults) {
+    let totalScore = learnerResults[learner_id]["Student Points"];
+    let totalPossible = learnerResults[learner_id]["Possible Points"];
+    learnerResults[learner_id]["Student Grade"] = (totalScore / totalPossible) * 100;
+  }
+
+  console.dir(learnerResults, { depth: null });
 }
 
 
