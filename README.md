@@ -1,0 +1,1 @@
+Creating a function that will take an array of course group objects with a nested array of assignment objects along with a history of different students submissions (array of objects with nested objects) and return the assignment grades for each student as well as the total grade for each student. 
