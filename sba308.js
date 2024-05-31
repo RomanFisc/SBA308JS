@@ -89,27 +89,7 @@ const LearnerSubmission = [
   }
 ]
 
-//Analyzing Data
-// Create a program that outputs an array of objects
-// output: 
-//    - Learner ID: "id": number
-//    - Learners Average "avg: number"
-//      - weighted average
-//      - if an assignment is not yet due it shouldn't be included in the average
 
-//Program set up: 
-// - Create function
-// - Create empty array
-// - get user ID and add it to the array
-//    - learner submission is an array of objects. iterate over each object to find user id
-// - Creating average for a specific user 
-//    - let userscore = 0 
-//    - let assignment score = 0
-//    - If due date has passed: 
-//       - iterate through assignments and total the amount of possible points and add to assignment score
-//       - if User id matches the learner id iterate through and total up points and add to userscore
-//    - let result = userscrore/assignment score
-//    - 
 
 function getLearnerData(/*CourseInfo,*/ AssignmentGroup, LearnerSubmission) {
   const learnerResults = {};
@@ -155,6 +135,9 @@ function getLearnerData(/*CourseInfo,*/ AssignmentGroup, LearnerSubmission) {
                   assignment_id: currentAssignment.id,
                   grade : (studentScore / pointsPossible) * 100
                 });
+              }
+              if (studentScore < 0) {
+                continue
               }
             }
           }
