@@ -84,7 +84,7 @@ const LearnerSubmission = [
     "assignment_id": 4,
     "submission": {
       "submitted_at": "2024-05-22",
-      "score": 55
+      "score": 52
     }
   }
 ]
@@ -161,7 +161,27 @@ function getLearnerData(/*CourseInfo,*/ AssignmentGroup, LearnerSubmission) {
     for (let learner_id in learnerResults) {
       let totalScore = learnerResults[learner_id]["Student Points"];
       let totalPossible = learnerResults[learner_id]["Possible Points"];
-      learnerResults[learner_id]["Student Grade"] = (totalScore / totalPossible) * 100;
+      let StudentGrade = (totalScore / totalPossible) * 100;
+      learnerResults[learner_id]["Student Grade"]
+      switch (true){
+        case StudentGrade > 89:
+          learnerResults[learner_id]["Student Grade"] = "A";
+          break;
+        case StudentGrade > 79:
+          learnerResults[learner_id]["Student Grade"] = "B";
+          break;
+        case StudentGrade > 69:
+          learnerResults[learner_id]["Student Grade"] = "C";
+          break;
+        case StudentGrade > 59:
+          learnerResults[learner_id]["Student Grade"] = "D";
+          break;
+        case StudentGrade >= 0 && StudentGrade < 60:
+          learnerResults[learner_id]["Student Grade"] = "F";
+          break;
+        default: 
+          console.log("No grade on file");
+      }
     }
     console.dir(learnerResults, { depth: null });
 
